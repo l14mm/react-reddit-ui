@@ -67,7 +67,7 @@ const Header = ({ username }: HeaderProps) => {
             onClick={() => {
               const clientId = "OrJeH0ot_Zfl6Q";
               const redirectUrl = "http://localhost:3000/redirect";
-              window.location.href = `https://www.reddit.com/api/v1/authorize?client_id=${clientId}&response_type=code&state=RANDOM_STRING&redirect_uri=${redirectUrl}&duration=permanent&scope=identity`;
+              window.location.href = `https://www.reddit.com/api/v1/authorize?client_id=${clientId}&response_type=code&state=${window.location.pathname}&redirect_uri=${redirectUrl}&duration=permanent&scope=identity`;
             }}
           >
             Login
@@ -89,6 +89,4 @@ function mapStateToProps(state: HeaderState): HeaderProps {
   };
 }
 
-// export default withStyles(styles)(connect(mapStateToProps)(AsyncApp));
 export default connect(mapStateToProps)(Header);
-// export default Header;
