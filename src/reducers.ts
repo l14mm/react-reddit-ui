@@ -6,7 +6,8 @@ import {
   REQUEST_POST,
   RECEIVE_POSTS,
   RECEIVE_POST,
-  Actions
+  Actions,
+  LOGIN
 } from "./types";
 import { PostsType } from "./Components/Posts";
 
@@ -93,9 +94,21 @@ function postsBySubreddit(
   }
 }
 
+function authenticate(state: any = {}, action: Actions) {
+  switch (action.type) {
+    case LOGIN:
+      return Object.assign({}, state, {
+        data: action.data
+      });
+    default:
+      return state;
+  }
+}
+
 const rootReducer = combineReducers({
   postsBySubreddit,
-  selectedSubreddit
+  selectedSubreddit,
+  authenticate
 });
 
 export default rootReducer;
