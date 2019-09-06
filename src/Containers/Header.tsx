@@ -1,5 +1,12 @@
 import React from "react";
-import { Theme } from "@material-ui/core";
+import {
+  Theme,
+  Icon,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
@@ -35,6 +42,18 @@ interface HeaderState {
 
 const Header = ({ username }: HeaderProps) => {
   const classes = useStyles();
+  const [state, setState] = React.useState({
+    open: false
+  });
+
+  function handleClickOpen() {
+    setState({ ...state, open: true });
+  }
+
+  function handleClose() {
+    setState({ ...state, open: false });
+  }
+
   return (
     <AppBar
       position="static"
@@ -57,7 +76,7 @@ const Header = ({ username }: HeaderProps) => {
           My Account
         </Link>
         {username ? (
-          "hello " + username
+          "welcome " + username
         ) : (
           <Button
             href="#"
@@ -73,7 +92,28 @@ const Header = ({ username }: HeaderProps) => {
             Login
           </Button>
         )}
+        <Button onClick={handleClickOpen}>
+          <Icon>star</Icon>
+        </Button>
       </Toolbar>
+
+      <Dialog
+        disableBackdropClick
+        disableEscapeKeyDown
+        open={state.open}
+        onClose={handleClose}
+      >
+        <DialogTitle>Settings</DialogTitle>
+        <DialogContent>Colour Theme</DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleClose} color="primary">
+            Ok
+          </Button>
+        </DialogActions>
+      </Dialog>
     </AppBar>
   );
 };
