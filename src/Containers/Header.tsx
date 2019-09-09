@@ -5,7 +5,8 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions
+  DialogActions,
+  Switch
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -54,6 +55,12 @@ const Header = ({ username }: HeaderProps) => {
     setState({ ...state, open: false });
   }
 
+  function login() {
+    const clientId = "OrJeH0ot_Zfl6Q";
+    const redirectUrl = "http://localhost:3000/redirect";
+    window.location.href = `https://www.reddit.com/api/v1/authorize?client_id=${clientId}&response_type=code&state=${window.location.pathname}&redirect_uri=${redirectUrl}&duration=permanent&scope=identity`;
+  }
+
   return (
     <AppBar
       position="static"
@@ -83,11 +90,7 @@ const Header = ({ username }: HeaderProps) => {
             color="primary"
             variant="outlined"
             className={classes.link}
-            onClick={() => {
-              const clientId = "OrJeH0ot_Zfl6Q";
-              const redirectUrl = "http://localhost:3000/redirect";
-              window.location.href = `https://www.reddit.com/api/v1/authorize?client_id=${clientId}&response_type=code&state=${window.location.pathname}&redirect_uri=${redirectUrl}&duration=permanent&scope=identity`;
-            }}
+            onClick={login}
           >
             Login
           </Button>
@@ -96,7 +99,6 @@ const Header = ({ username }: HeaderProps) => {
           <Icon>star</Icon>
         </Button>
       </Toolbar>
-
       <Dialog
         disableBackdropClick
         disableEscapeKeyDown
@@ -104,7 +106,14 @@ const Header = ({ username }: HeaderProps) => {
         onClose={handleClose}
       >
         <DialogTitle>Settings</DialogTitle>
-        <DialogContent>Colour Theme</DialogContent>
+        <DialogContent>
+          Dark Mode
+          <Switch
+            onChange={(_, f) => {
+              console.log(f);
+            }}
+          />
+        </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
