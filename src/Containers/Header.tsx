@@ -96,7 +96,7 @@ const Header = ({ username }: HeaderProps) => {
           </Button>
         )}
         <Button onClick={handleClickOpen}>
-          <Icon>star</Icon>
+          <Icon>settings_applications</Icon>
         </Button>
       </Toolbar>
       <Dialog
