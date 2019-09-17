@@ -9,12 +9,16 @@ import { createBrowserHistory } from "history";
 import PostRoot from "./PostRoot";
 import Redirect from "./Redirect";
 
-const theme = createMuiTheme();
+const muiTheme = createMuiTheme({
+  palette: {
+    type: "dark"
+  }
+});
 const history = createBrowserHistory();
 
 export default function Root() {
   return (
-    <MuiThemeProvider theme={theme}>
+    <MuiThemeProvider theme={muiTheme}>
       <Router history={history}>
         <CssBaseline />
         <Header />
