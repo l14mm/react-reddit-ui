@@ -1,6 +1,5 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import grey from "@material-ui/core/colors/grey";
 import {
   Card,
   CardContent,
@@ -10,42 +9,44 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
-const useStyles = makeStyles((theme: Theme) => ({
-  post: {
-    border: `1px solid ${theme.palette.divider}`,
-    margin: theme.spacing(0.5, 0),
-    backgroundColor: grey[200],
-    display: "flex",
-    "&:hover": {
-      borderColor: "black"
+const useStyles = makeStyles((theme: Theme) => {
+  return {
+    post: {
+      border: `1px solid ${theme.palette.divider}`,
+      margin: theme.spacing(0.5, 0),
+      backgroundColor: theme.palette.background.paper,
+      display: "flex",
+      "&:hover": {
+        borderColor: "black"
+      }
+    },
+    details: {
+      display: "flex",
+      flexDirection: "column"
+    },
+    content: {
+      flex: "1 0 auto"
+    },
+    thumbnail: {
+      width: 100,
+      minWidth: 100,
+      height: 100,
+      backgroundColor: "gray",
+      color: "white"
+    },
+    votes: {
+      display: "flex",
+      flexDirection: "column",
+      margin: 5,
+      textAlign: "center",
+      justifyContent: "center",
+      minWidth: 60
+    },
+    link: {
+      textDecoration: "none"
     }
-  },
-  details: {
-    display: "flex",
-    flexDirection: "column"
-  },
-  content: {
-    flex: "1 0 auto"
-  },
-  thumbnail: {
-    width: 100,
-    minWidth: 100,
-    height: 100,
-    backgroundColor: "gray",
-    color: "white"
-  },
-  votes: {
-    display: "flex",
-    flexDirection: "column",
-    margin: 5,
-    textAlign: "center",
-    justifyContent: "center",
-    minWidth: 60
-  },
-  link: {
-    textDecoration: "none"
-  }
-}));
+  };
+});
 
 export interface PostType {
   author: string;

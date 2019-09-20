@@ -10,51 +10,52 @@ import {
   ListItem,
   ListItemText
 } from "@material-ui/core";
-import { grey } from "@material-ui/core/colors";
 import { Classes } from "@material-ui/styles/mergeClasses/mergeClasses";
 import Comment from "./Comment";
 
-const styles = (theme: Theme) => ({
-  post: {
-    border: `1px solid ${theme.palette.divider}`,
-    margin: theme.spacing(0.5, 0),
-    backgroundColor: grey[200],
-    display: "flex",
-    "&:hover": {
-      borderColor: "black"
+const styles = (theme: Theme) => {
+  return {
+    post: {
+      border: `1px solid ${theme.palette.divider}`,
+      margin: theme.spacing(0.5, 0),
+      backgroundColor: theme.palette.background.paper,
+      display: "flex",
+      "&:hover": {
+        borderColor: "black"
+      }
+    },
+    comment: {},
+    details: {
+      display: "flex",
+      flexDirection: "column" as "column"
+    },
+    content: {
+      flex: "1 0 auto"
+    },
+    thumbnail: {
+      width: 100,
+      minWidth: 100,
+      height: 100,
+      backgroundColor: "gray",
+      color: "white"
+    },
+    link: {
+      padding: theme.spacing(0, 2),
+      textDecoration: "none"
+    },
+    votes: {
+      display: "flex",
+      flexDirection: "column" as "column",
+      margin: 5,
+      textAlign: "center" as "center",
+      justifyContent: "center",
+      minWidth: 60
+    },
+    indent: {
+      marginLeft: "20px"
     }
-  },
-  comment: {},
-  details: {
-    display: "flex",
-    flexDirection: "column" as "column"
-  },
-  content: {
-    flex: "1 0 auto"
-  },
-  thumbnail: {
-    width: 100,
-    minWidth: 100,
-    height: 100,
-    backgroundColor: "gray",
-    color: "white"
-  },
-  link: {
-    padding: theme.spacing(0, 2),
-    textDecoration: "none"
-  },
-  votes: {
-    display: "flex",
-    flexDirection: "column" as "column",
-    margin: 5,
-    textAlign: "center" as "center",
-    justifyContent: "center",
-    minWidth: 60
-  },
-  indent: {
-    marginLeft: "20px"
-  }
-});
+  };
+};
 
 export interface PostProps {
   classes: Classes;
