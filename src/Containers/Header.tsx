@@ -1,20 +1,23 @@
 import React from "react";
 import {
   Theme,
-  Icon,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  Switch
+  Switch,
+  IconButton,
+  AppBar,
+  Toolbar,
+  Typography,
+  Button
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Button from "@material-ui/core/Button";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
+import Settings from "@material-ui/icons/Settings";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { switchTheme } from "../actions";
 
 const useStyles = makeStyles((theme: Theme) => ({
   appBar: {
@@ -30,18 +33,32 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: theme.spacing(1, 1.5),
     textDecoration: "none",
     color: theme.palette.text.primary
+  },
+  flexGrow: {
+    flexGrow: 1
+  },
+  button: {
+    margin: theme.spacing(1)
   }
 }));
 
 interface HeaderProps {
   username: string;
+  theme: string;
+}
+
+interface HeaderPropsWithDispatch {
+  username: string;
+  theme: string;
+  dispatch: Dispatch<any>;
 }
 
 interface HeaderState {
   authenticate: any;
+  settings: any;
 }
 
-const Header = ({ username }: HeaderProps) => {
+const Header = ({ username, dispatch, theme }: HeaderPropsWithDispatch) => {
   const classes = useStyles();
   const [state, setState] = React.useState({
     open: false
@@ -69,7 +86,7 @@ const Header = ({ username }: HeaderProps) => {
       className={classes.appBar}
     >
       <Toolbar className={classes.toolbar}>
-        <Link className={classes.link} to="/">
+        <Link className={`${classes.link} ${classes.flexGrow}`} to="/">
           <Typography
             variant="h6"
             color="inherit"
@@ -79,11 +96,11 @@ const Header = ({ username }: HeaderProps) => {
             React Reddit
           </Typography>
         </Link>
-        <Link to="/" className={classes.link}>
+        <Link to="/account" className={classes.link}>
           My Account
         </Link>
         {username ? (
-          "welcome " + username
+          `Hi, ${username}`
         ) : (
           <Button
             href="#"
@@ -95,9 +112,13 @@ const Header = ({ username }: HeaderProps) => {
             Login
           </Button>
         )}
-        <Button onClick={handleClickOpen}>
-          <Icon>settings_applications</Icon>
-        </Button>
+        <IconButton
+          className={classes.button}
+          aria-label="delete"
+          onClick={handleClickOpen}
+        >
+          <Settings />
+        </IconButton>
       </Toolbar>
       <Dialog
         disableBackdropClick
@@ -109,8 +130,9 @@ const Header = ({ username }: HeaderProps) => {
         <DialogContent>
           Dark Mode
           <Switch
-            onChange={(_, f) => {
-              console.log(f);
+            checked={theme === "dark"}
+            onChange={() => {
+              dispatch(switchTheme());
             }}
           />
         </DialogContent>
@@ -128,13 +150,17 @@ const Header = ({ username }: HeaderProps) => {
 };
 
 function mapStateToProps(state: HeaderState): HeaderProps {
-  const { authenticate } = state;
+  const { authenticate, settings } = state;
   const { name: username } = authenticate.data || {
     name: null
   };
+  const { theme } = settings || {
+    theme: "dark"
+  };
 
   return {
-    username
+    username,
+    theme
   };
 }
 
