@@ -6,7 +6,9 @@ import {
   REQUEST_POSTS,
   REQUEST_POST,
   RECEIVE_POSTS,
-  RECEIVE_POST
+  RECEIVE_POST,
+  LOGIN,
+  SWITCH_THEME
 } from "./types";
 
 export function selectSubreddit(subreddit: string) {
@@ -103,4 +105,18 @@ export const fetchPostsIfNeeded = (subreddit: string) => (
   if (shouldFetchPosts(getState(), subreddit)) {
     return dispatch(fetchPosts(subreddit));
   }
+};
+
+export const login = (data: any) => {
+  console.log("login action called with", data);
+  return {
+    type: LOGIN,
+    data
+  };
+};
+
+export const switchTheme = () => {
+  return {
+    type: SWITCH_THEME
+  };
 };

@@ -7,7 +7,8 @@ import {
   RECEIVE_POSTS,
   RECEIVE_POST,
   Actions,
-  LOGIN
+  LOGIN,
+  SWITCH_THEME
 } from "./types";
 import { PostsType } from "./Components/Posts";
 
@@ -105,10 +106,23 @@ function authenticate(state: any = {}, action: Actions) {
   }
 }
 
+function settings(state: any = { theme: "dark" }, action: Actions) {
+  switch (action.type) {
+    case SWITCH_THEME:
+      return Object.assign({}, state, {
+        data: action.data,
+        theme: state.theme === "light" ? "dark" : "light"
+      });
+    default:
+      return state;
+  }
+}
+
 const rootReducer = combineReducers({
   postsBySubreddit,
   selectedSubreddit,
-  authenticate
+  authenticate,
+  settings
 });
 
 export default rootReducer;

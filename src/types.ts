@@ -6,6 +6,8 @@ export const RECEIVE_POSTS = "RECEIVE_POSTS";
 export const RECEIVE_POST = "RECEIVE_POST";
 export const SELECT_SUBREDDIT = "SELECT_SUBREDDIT";
 export const INVALIDATE_SUBREDDIT = "INVALIDATE_SUBREDDIT";
+export const LOGIN = "LOGIN";
+export const SWITCH_THEME = "SWITCH_THEME";
 
 interface SelectSubredditAction {
   type: typeof SELECT_SUBREDDIT;
@@ -41,10 +43,22 @@ interface RequestPostAction {
   subreddit: string;
 }
 
+interface LoginAction {
+  type: typeof LOGIN;
+  data: any;
+}
+
+interface SwitchThemeAction {
+  type: typeof SWITCH_THEME;
+  data: any;
+}
+
 export type Actions =
   | SelectSubredditAction
   | ReceivePostsAction
   | ReceivePostAction
   | InvalidateSubredditAction
   | RequestPostsAction
-  | RequestPostAction;
+  | RequestPostAction
+  | LoginAction
+  | SwitchThemeAction;
