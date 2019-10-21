@@ -54,7 +54,8 @@ function posts(
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: false,
-        items: action.posts,
+        items: state.items.concat(action.posts),
+        after: action.after,
         lastUpdated: action.receivedAt
       });
     case RECEIVE_POST:

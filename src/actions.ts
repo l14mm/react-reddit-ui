@@ -25,10 +25,11 @@ export function invalidateSubreddit(subreddit: string) {
   };
 }
 
-function requestPosts(subreddit: string) {
+function requestPosts(subreddit: string, after?: string | null) {
   return {
     type: REQUEST_POSTS,
-    subreddit
+    subreddit,
+    after
   };
 }
 
@@ -46,6 +47,7 @@ interface Child {
 interface PostsJson {
   data: {
     children: Child[];
+    after: string;
   };
 }
 
@@ -54,6 +56,7 @@ function receivePosts(subreddit: string, json: PostsJson) {
     type: RECEIVE_POSTS,
     subreddit,
     posts: json.data.children.map(child => child.data),
+    after: json.data.after,
     post: {},
     receivedAt: Date.now()
   };
@@ -69,10 +72,10 @@ function receivePost(query: string, json: [PostsJson, PostsJson]) {
   };
 }
 
-function fetchPosts(subreddit: string) {
+function fetchPosts(subreddit: string, after?: string | null) {
   return (dispatch: Dispatch<any>) => {
-    dispatch(requestPosts(subreddit));
-    return fetch(`https://www.reddit.com/r/${subreddit}.json`)
+    dispatch(requestPosts(subreddit, after));
+    return fetch(`https://www.reddit.com/r/${subreddit}.json?after=${after}`)
       .then(response => response.json())
       .then(json => dispatch(receivePosts(subreddit, json)));
   };
@@ -88,6 +91,7 @@ export const fetchPost = (query: string) => {
 };
 
 function shouldFetchPosts(state: any, subreddit: string) {
+  return true;
   const posts = state.postsBySubreddit[subreddit];
   if (!posts) {
     return true;
@@ -98,12 +102,12 @@ function shouldFetchPosts(state: any, subreddit: string) {
   }
 }
 
-export const fetchPostsIfNeeded = (subreddit: string) => (
-  dispatch: Dispatch<any>,
-  getState: Function
-) => {
+export const fetchPostsIfNeeded = (
+  subreddit: string,
+  after?: string | null
+) => (dispatch: Dispatch<any>, getState: Function) => {
   if (shouldFetchPosts(getState(), subreddit)) {
-    return dispatch(fetchPosts(subreddit));
+    return dispatch(fetchPosts(subreddit, after));
   }
 };
 

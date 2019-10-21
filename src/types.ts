@@ -17,7 +17,8 @@ interface SelectSubredditAction {
 interface ReceivePostsAction {
   type: typeof RECEIVE_POSTS;
   subreddit: string;
-  posts: PostsType[];
+  posts: PostsType;
+  after: string;
   receivedAt: number;
 }
 
