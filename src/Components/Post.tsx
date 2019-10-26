@@ -7,8 +7,7 @@ import {
   CardContent,
   Typography,
   List,
-  ListItem,
-  ListItemText
+  CircularProgress
 } from "@material-ui/core";
 import { Classes } from "@material-ui/styles/mergeClasses/mergeClasses";
 import Comment from "./Comment";
@@ -53,6 +52,9 @@ const styles = (theme: Theme) => {
     },
     indent: {
       marginLeft: "20px"
+    },
+    progress: {
+      margin: theme.spacing(2)
     }
   };
 };
@@ -65,10 +67,12 @@ export interface PostProps {
 
 const Post = (props: PostProps) => {
   const { classes, items, comments } = props;
-  items && console.log("items", items);
-  comments && console.log("comments", comments);
+  // items && console.log("items", items);
+  // comments && console.log("comments", comments);
 
-  return !items ? null : (
+  return !items || items.length === 0 ? (
+    <CircularProgress className={classes.progress} />
+  ) : (
     <>
       <Link className={classes.link} href={items.url} target="_blank">
         <Card className={classes.post}>
@@ -89,33 +93,17 @@ const Post = (props: PostProps) => {
         </Card>
       </Link>
       <List component="nav" className={classes.root}>
-        {comments.slice(0, 2).map((comment: any) => (
-          <>
-            <ListItem className={classes.comment} key={comment.id}>
-              <div className={classes.votes}>
-                <Typography>{comment.ups}</Typography>
-              </div>
-              <ListItemText
-                primary={comment.body}
-                secondary={`u/${comment.author}`}
-              />
-            </ListItem>
-            {comment.replies.data.children
-              .slice(0, 2)
-              .map((reply: any) => reply.data)
-              .map((reply: any) => (
-                <Comment
-                  classes={classes}
-                  key={reply.id}
-                  id={reply.id}
-                  ups={reply.ups}
-                  body={reply.body}
-                  author={reply.author}
-                  replies={reply.replies}
-                  indent={1}
-                />
-              ))}
-          </>
+        {comments.slice(0, 2).map((reply: any) => (
+          <Comment
+            classes={classes}
+            key={reply.id}
+            id={reply.id}
+            ups={reply.ups}
+            body={reply.body}
+            author={reply.author}
+            replies={reply.replies}
+            indent={0}
+          />
         ))}
       </List>
     </>
