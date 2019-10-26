@@ -1,8 +1,17 @@
 import React, { useState } from "react";
 import { withStyles, Theme } from "@material-ui/core/styles";
-import { Typography, ListItem, ListItemText } from "@material-ui/core";
+import {
+  Collapse,
+  Typography,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  IconButton
+} from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
 import { Classes } from "@material-ui/styles/mergeClasses/mergeClasses";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import clsx from "clsx";
 
 const styles = (theme: Theme) => ({
   post: {
@@ -43,6 +52,16 @@ const styles = (theme: Theme) => ({
   },
   indent: {
     marginLeft: "20px"
+  },
+  expand: {
+    transform: "rotate(0deg)",
+    marginLeft: "auto",
+    transition: theme.transitions.create("transform", {
+      duration: theme.transitions.duration.shortest
+    })
+  },
+  expandOpen: {
+    transform: "rotate(180deg)"
   }
 });
 
@@ -65,40 +84,65 @@ const Comment = ({
   replies,
   indent
 }: CommentProps) => {
-  const [clicked, setClicked] = useState(false);
+  const [expanded, setExpanded] = useState(true);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
   return !body ? null : (
     <>
       <ListItem
         onClick={() => {
-          setClicked(!clicked);
+          setExpanded(!expanded);
         }}
         style={{
-          marginLeft: `${20 * indent}px`
+          paddingLeft: `${20 * indent}px`
         }}
         key={id}
       >
         <div className={classes.votes}>
           <Typography>{ups}</Typography>
         </div>
-        <ListItemText primary={body} secondary={`u/${author}`} />
+        <ListItemText
+          primary={body}
+          secondary={`u/${author}`}
+          style={{ marginRight: 10 }}
+        />
+        {replies && replies.data.children && (
+          <ListItemSecondaryAction>
+            <IconButton
+              className={clsx(classes.expand, {
+                [classes.expandOpen]: expanded
+              })}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+            >
+              <ExpandMoreIcon />
+            </IconButton>
+          </ListItemSecondaryAction>
+        )}
       </ListItem>
-      {!clicked &&
-        replies &&
-        replies.data.children
-          .slice(0, 2)
-          .map((reply: any) => reply.data)
-          .map((reply: any) => (
-            <Comment
-              classes={classes}
-              key={reply.id}
-              id={reply.id}
-              ups={reply.ups}
-              body={reply.body}
-              author={reply.author}
-              replies={reply.replies}
-              indent={indent + 1}
-            />
-          ))}
+      {replies && replies.data.children && (
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          {replies.data.children
+            .slice(0, 2)
+            .map((reply: any) => reply.data)
+            .map((reply: any) => (
+              <Comment
+                classes={classes}
+                key={reply.id}
+                id={reply.id}
+                ups={reply.ups}
+                body={reply.body}
+                author={reply.author}
+                replies={reply.replies}
+                indent={indent + 1}
+              />
+            ))}
+        </Collapse>
+      )}
     </>
   );
 };
