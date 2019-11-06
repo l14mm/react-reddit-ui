@@ -9,10 +9,16 @@ import {
 import Picker from "../Components/Picker";
 import Posts, { PostsType } from "../Components/Posts";
 import { withStyles, Theme } from "@material-ui/core/styles";
+import InfiniteScroll from "react-infinite-scroller";
+import { IconButton, CircularProgress } from "@material-ui/core";
+import { Refresh } from "@material-ui/icons"
 
 const styles = (theme: Theme) => ({
   root: {
     padding: theme.spacing(0, 2)
+  },
+  button: {
+    // margin: theme.spacing(1)
   }
 });
 
@@ -22,6 +28,7 @@ export interface AsyncAppProps {
   isFetching: boolean;
   lastUpdated: number;
   posts: PostsType;
+  after: string;
   classes: any;
 }
 
@@ -30,6 +37,7 @@ interface PostsBySubreddit {
     isFetching: boolean;
     lastUpdated: number;
     items: PostsType;
+    after: string;
   };
 }
 
@@ -41,8 +49,6 @@ export interface AsyncAppState {
 class AsyncApp extends Component<AsyncAppProps, AsyncAppState> {
   public constructor(props: AsyncAppProps) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleRefreshClick = this.handleRefreshClick.bind(this);
   }
 
   public componentDidMount() {
@@ -57,18 +63,26 @@ class AsyncApp extends Component<AsyncAppProps, AsyncAppState> {
     }
   }
 
-  private handleChange(nextSubreddit: string) {
+  private handleChange = (nextSubreddit: string) => {
     this.props.dispatch(selectSubreddit(nextSubreddit));
     this.props.dispatch(fetchPostsIfNeeded(nextSubreddit));
   }
 
-  private handleRefreshClick(e: MouseEvent) {
+  private handleRefreshClick = (e: MouseEvent) => {
     e.preventDefault();
 
     const { dispatch, selectedSubreddit } = this.props;
     dispatch(invalidateSubreddit(selectedSubreddit));
     dispatch(fetchPostsIfNeeded(selectedSubreddit));
   }
+
+  private onLoadMore = (e: any) => {
+    console.log("onloadmore", e);
+    if (e > 2) {
+      const { dispatch, selectedSubreddit, after } = this.props;
+      dispatch(fetchPostsIfNeeded(selectedSubreddit, after));
+    }
+  };
 
   public render() {
     const {
@@ -91,17 +105,34 @@ class AsyncApp extends Component<AsyncAppProps, AsyncAppState> {
               Last updated at {new Date(lastUpdated).toLocaleTimeString()}.{" "}
             </span>
           )}
-          {!isFetching && (
-            <button onClick={this.handleRefreshClick}>Refresh</button>
-          )}
+          {!isFetching ? (
+            <IconButton
+              className={classes.button}
+              aria-label="delete"
+              onClick={this.handleRefreshClick}
+            >
+              <Refresh />
+            </IconButton>
+          ) : (<CircularProgress />)}
         </p>
         {isFetching && posts.length === 0 && <h2>Loading...</h2>}
         {!isFetching && posts.length === 0 && <h2>Empty.</h2>}
-        {posts.length > 0 && (
-          <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-            <Posts posts={posts} />
-          </div>
-        )}
+        <InfiniteScroll
+          pageStart={0}
+          loadMore={this.onLoadMore}
+          hasMore={true || false}
+          loader={
+            <div className="loader" key={0}>
+              Loading ...
+            </div>
+          }
+        >
+          {posts.length > 0 && (
+            <div style={{ opacity: isFetching ? 0.5 : 1 }}>
+              <Posts posts={posts} />
+            </div>
+          )}
+        </InfiniteScroll>
       </div>
     );
   }
@@ -109,17 +140,19 @@ class AsyncApp extends Component<AsyncAppProps, AsyncAppState> {
 
 function mapStateToProps(state: AsyncAppState) {
   const { selectedSubreddit, postsBySubreddit } = state;
-  const { isFetching, lastUpdated, items: posts } = postsBySubreddit[
+  const { isFetching, lastUpdated, items: posts, after } = postsBySubreddit[
     selectedSubreddit
   ] || {
-    isFetching: true,
-    items: [],
-    lastUpdated: Date.now()
-  };
+      isFetching: true,
+      items: [],
+      after: null,
+      lastUpdated: Date.now()
+    };
 
   return {
     selectedSubreddit,
     posts,
+    after,
     isFetching,
     lastUpdated
   };

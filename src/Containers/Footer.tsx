@@ -19,8 +19,8 @@ const Footer = () => {
   const classes = useStyles();
   return (
     <Container maxWidth="md" component="footer" className={classes.footer}>
-      <Typography variant="h6" color="textPrimary" gutterBottom>
-        Footer
+      <Typography variant="subtitle2" color="textPrimary" gutterBottom align="right">
+        react reddit 2019 ©
       </Typography>
     </Container>
   );

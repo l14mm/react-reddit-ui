@@ -154,9 +154,7 @@ function mapStateToProps(state: HeaderState): HeaderProps {
   const { name: username } = authenticate.data || {
     name: null
   };
-  const { theme } = settings || {
-    theme: "dark"
-  };
+  const { theme } = settings;
 
   return {
     username,

@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => {
       backgroundColor: theme.palette.background.paper,
       display: "flex",
       "&:hover": {
-        borderColor: "black"
+        borderColor: theme.palette.text.primary
       }
     },
     details: {
