@@ -80,7 +80,7 @@ const Header = ({ username, dispatch, theme }: HeaderPropsWithDispatch) => {
 
   return (
     <AppBar
-      position="static"
+      position="sticky"
       color="default"
       elevation={0}
       className={classes.appBar}
@@ -102,16 +102,16 @@ const Header = ({ username, dispatch, theme }: HeaderPropsWithDispatch) => {
         {username ? (
           `Hi, ${username}`
         ) : (
-          <Button
-            href="#"
-            color="primary"
-            variant="outlined"
-            className={classes.link}
-            onClick={login}
-          >
-            Login
+            <Button
+              href="#"
+              color="primary"
+              variant="outlined"
+              className={classes.link}
+              onClick={login}
+            >
+              Login
           </Button>
-        )}
+          )}
         <IconButton
           className={classes.button}
           aria-label="delete"
