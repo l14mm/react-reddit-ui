@@ -10,7 +10,7 @@ import Picker from "../Components/Picker";
 import Posts, { PostsType } from "../Components/Posts";
 import { withStyles, Theme } from "@material-ui/core/styles";
 import InfiniteScroll from "react-infinite-scroller";
-import { IconButton, CircularProgress } from "@material-ui/core";
+import { IconButton, CircularProgress, Typography } from "@material-ui/core";
 import { Refresh } from "@material-ui/icons"
 
 const styles = (theme: Theme) => ({
@@ -19,6 +19,15 @@ const styles = (theme: Theme) => ({
   },
   button: {
     // margin: theme.spacing(1)
+  },
+  updateContainer: {
+    display: 'flex',
+    height: 50
+  },
+  lastUpdated: {
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    marginRight: 10
   }
 });
 
@@ -99,11 +108,11 @@ class AsyncApp extends Component<AsyncAppProps, AsyncAppState> {
           onChange={this.handleChange}
           options={["all", "all/top", "all/hot"]}
         />
-        <p>
+        <div className={classes.updateContainer}>
           {lastUpdated && (
-            <span>
+            <Typography className={classes.lastUpdated}>
               Last updated at {new Date(lastUpdated).toLocaleTimeString()}.{" "}
-            </span>
+            </Typography>
           )}
           {!isFetching ? (
             <IconButton
@@ -114,17 +123,14 @@ class AsyncApp extends Component<AsyncAppProps, AsyncAppState> {
               <Refresh />
             </IconButton>
           ) : (<CircularProgress />)}
-        </p>
-        {isFetching && posts.length === 0 && <h2>Loading...</h2>}
-        {!isFetching && posts.length === 0 && <h2>Empty.</h2>}
+        </div>
+        {posts.length === 0 && <Typography component="h2">{isFetching ? "Loading..." : "Empty."}</Typography>}
         <InfiniteScroll
           pageStart={0}
           loadMore={this.onLoadMore}
           hasMore={true || false}
           loader={
-            <div className="loader" key={0}>
-              Loading ...
-            </div>
+            posts.length > 0 ? <Typography component="h2" className="loader" key={0}>Loading...</Typography> : <></>
           }
         >
           {posts.length > 0 && (

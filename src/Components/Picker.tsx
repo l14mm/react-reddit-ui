@@ -8,15 +8,13 @@ interface PickerProps {
 }
 
 const useStyles = makeStyles(theme => ({
-
   formControl: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(2),
     minWidth: 120,
   }
 }));
 
 const Picker = ({ value, onChange, options }: PickerProps) => {
-
   const classes = useStyles();
   return (
     <span>
