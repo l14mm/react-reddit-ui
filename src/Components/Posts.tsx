@@ -1,13 +1,17 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import ArrowUpIcon from "@material-ui/icons/ArrowUpward";
+import ArrowDownIcon from "@material-ui/icons/ArrowDownward";
 import {
   Card,
   CardContent,
   Typography,
   CardMedia,
-  Theme
+  Theme,
+  IconButton
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import clsx from "clsx";
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -44,6 +48,17 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     link: {
       textDecoration: "none"
+    },
+    voteArrow: {
+      "&:hover": {
+        color: "red"
+      }
+    },
+    voteArrowUp: {
+
+    },
+    voteArrowDown: {
+
     }
   };
 });
@@ -87,7 +102,21 @@ const Posts = (props: PostsProps) => {
         <Link to={post.permalink} className={classes.link} key={i}>
           <Card className={classes.post}>
             <div className={classes.votes}>
+              <IconButton
+                className={clsx(classes.voteArrow, classes.voteArrowUp)}
+                onClick={(e) => { e.preventDefault() }}
+                aria-label="upvote"
+              >
+                <ArrowUpIcon />
+              </IconButton>
               <Typography>{post.ups}</Typography>
+              <IconButton
+                className={clsx(classes.voteArrow, classes.voteArrowDown)}
+                onClick={(e) => { e.preventDefault() }}
+                aria-label="downvote"
+              >
+                <ArrowDownIcon />
+              </IconButton>
             </div>
             {renderThumbnail(classes, post.thumbnail)}
             <div className={classes.details}>
@@ -102,8 +131,9 @@ const Posts = (props: PostsProps) => {
             </div>
           </Card>
         </Link>
-      ))}
-    </ul>
+      ))
+      }
+    </ul >
   );
 };
 
