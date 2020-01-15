@@ -50,15 +50,22 @@ const useStyles = makeStyles((theme: Theme) => {
       textDecoration: "none"
     },
     voteArrow: {
+    },
+    upvoted: {
+      color: "red"
+    },
+    downvoted: {
+      color: "blue"
+    },
+    voteArrowUp: {
       "&:hover": {
         color: "red"
       }
     },
-    voteArrowUp: {
-
-    },
     voteArrowDown: {
-
+      "&:hover": {
+        color: "blue"
+      }
     }
   };
 });
@@ -71,6 +78,7 @@ export interface PostType {
   ups: number;
   downs: number;
   permalink: string;
+  likes: boolean;
 }
 
 export type PostsType = PostType[];
@@ -103,15 +111,20 @@ const Posts = (props: PostsProps) => {
           <Card className={classes.post}>
             <div className={classes.votes}>
               <IconButton
-                className={clsx(classes.voteArrow, classes.voteArrowUp)}
+                className={clsx(classes.voteArrow, classes.voteArrowUp, {
+                  [classes.upvoted]: post.likes
+                })}
                 onClick={(e) => { e.preventDefault() }}
                 aria-label="upvote"
+              // style={{ color: post.likes ? "red" : post.likes === false ? "blue" : undefined }}
               >
                 <ArrowUpIcon />
               </IconButton>
               <Typography>{post.ups}</Typography>
               <IconButton
-                className={clsx(classes.voteArrow, classes.voteArrowDown)}
+                className={clsx(classes.voteArrow, classes.voteArrowDown, {
+                  [classes.downvoted]: post.likes === false
+                })}
                 onClick={(e) => { e.preventDefault() }}
                 aria-label="downvote"
               >
