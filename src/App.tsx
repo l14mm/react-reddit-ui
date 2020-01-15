@@ -15,7 +15,7 @@ export const loadState = (stateName: string) => {
   }
 };
 
-const store = configureStore({
+export const store = configureStore({
   authenticate: JSON.parse(localStorage.getItem("authenticate") || "{}")
 });
 

@@ -11,6 +11,7 @@ import {
   LOGOUT,
   SWITCH_THEME
 } from "./types";
+import { store } from "./App";
 
 export function selectSubreddit(subreddit: string) {
   return {
@@ -74,9 +75,10 @@ function receivePost(query: string, json: [PostsJson, PostsJson]) {
 }
 
 function fetchPosts(subreddit: string, after?: string | null) {
+  const { accessToken } = store.getState().authenticate;
   return (dispatch: Dispatch<any>) => {
     dispatch(requestPosts(subreddit, after));
-    return fetch(`https://www.reddit.com/r/${subreddit}.json?after=${after}`)
+    return fetch(`http://localhost:3001/posts?query=r/${subreddit}&after=${after}&access_token=${accessToken}`)
       .then(response => response.json())
       .then(json => dispatch(receivePosts(subreddit, json)));
   };

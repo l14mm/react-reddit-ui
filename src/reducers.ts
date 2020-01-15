@@ -101,7 +101,8 @@ function authenticate(state: any = {}, action: Actions) {
   switch (action.type) {
     case LOGIN:
       return Object.assign({}, state, {
-        data: action.data
+        data: action.data,
+        accessToken: action.data.access_token
       });
     case LOGOUT:
       return Object.assign({}, state, {
