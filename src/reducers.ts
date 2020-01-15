@@ -8,7 +8,8 @@ import {
   RECEIVE_POST,
   Actions,
   LOGIN,
-  SWITCH_THEME
+  SWITCH_THEME,
+  LOGOUT
 } from "./types";
 import { PostsType } from "./Components/Posts";
 
@@ -101,6 +102,10 @@ function authenticate(state: any = {}, action: Actions) {
     case LOGIN:
       return Object.assign({}, state, {
         data: action.data
+      });
+    case LOGOUT:
+      return Object.assign({}, state, {
+        data: null
       });
     default:
       return state;

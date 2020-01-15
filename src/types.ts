@@ -7,6 +7,7 @@ export const RECEIVE_POST = "RECEIVE_POST";
 export const SELECT_SUBREDDIT = "SELECT_SUBREDDIT";
 export const INVALIDATE_SUBREDDIT = "INVALIDATE_SUBREDDIT";
 export const LOGIN = "LOGIN";
+export const LOGOUT = "LOGOUT";
 export const SWITCH_THEME = "SWITCH_THEME";
 
 interface SelectSubredditAction {
@@ -49,6 +50,10 @@ interface LoginAction {
   data: any;
 }
 
+interface LogoutAction {
+  type: typeof LOGOUT;
+}
+
 interface SwitchThemeAction {
   type: typeof SWITCH_THEME;
   data: any;
@@ -62,4 +67,5 @@ export type Actions =
   | RequestPostsAction
   | RequestPostAction
   | LoginAction
+  | LogoutAction
   | SwitchThemeAction;

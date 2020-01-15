@@ -17,7 +17,8 @@ import Settings from "@material-ui/icons/Settings";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { switchTheme } from "../actions";
+import { switchTheme, logout } from "../actions";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const useStyles = makeStyles((theme: Theme) => ({
   appBar: {
@@ -135,6 +136,13 @@ const Header = ({ username, dispatch, theme }: HeaderPropsWithDispatch) => {
               dispatch(switchTheme());
             }}
           />
+          Logout
+        <IconButton className={classes.button} aria-label="logout"
+            onClick={() => {
+              dispatch(logout());
+            }}>
+            <ExitToAppIcon />
+          </IconButton>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">

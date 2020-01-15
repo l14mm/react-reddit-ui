@@ -8,6 +8,7 @@ import {
   RECEIVE_POSTS,
   RECEIVE_POST,
   LOGIN,
+  LOGOUT,
   SWITCH_THEME
 } from "./types";
 
@@ -116,6 +117,13 @@ export const login = (data: any) => {
   return {
     type: LOGIN,
     data
+  };
+};
+
+export const logout = () => {
+  localStorage.removeItem("authenticate");
+  return {
+    type: LOGOUT
   };
 };
 

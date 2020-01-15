@@ -16,7 +16,7 @@ export const loadState = (stateName: string) => {
 };
 
 const store = configureStore({
-  authenticate: loadState("authenticate")
+  authenticate: JSON.parse(localStorage.getItem("authenticate") || "{}")
 });
 
 // persist authenticate data
