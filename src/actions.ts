@@ -75,13 +75,18 @@ function receivePost(query: string, json: [PostsJson, PostsJson]) {
 }
 
 function fetchPosts(subreddit: string, after?: string | null) {
-  const { accessToken } = store.getState().authenticate;
-  return (dispatch: Dispatch<any>) => {
-    dispatch(requestPosts(subreddit, after));
-    return fetch(`http://localhost:3001/posts?query=r/${subreddit}&after=${after}&access_token=${accessToken}`)
-      .then(response => response.json())
-      .then(json => dispatch(receivePosts(subreddit, json)));
-  };
+  const { accessToken, expiresAt } = store.getState().authenticate;
+  if (new Date() > expiresAt) {
+    // refresh token
+    alert("refresh token");
+  } else {
+    return (dispatch: Dispatch<any>) => {
+      dispatch(requestPosts(subreddit, after));
+      return fetch(`http://localhost:3001/posts?query=r/${subreddit}&after=${after}&access_token=${accessToken}`)
+        .then(response => response.json())
+        .then(json => dispatch(receivePosts(subreddit, json)));
+    };
+  }
 }
 
 export const fetchPost = (query: string) => {

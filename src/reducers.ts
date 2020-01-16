@@ -100,9 +100,14 @@ function postsBySubreddit(
 function authenticate(state: any = {}, action: Actions) {
   switch (action.type) {
     case LOGIN:
+      const date = new Date();
+      date.setUTCSeconds(date.getUTCSeconds() + action.data.expires_in);
       return Object.assign({}, state, {
         data: action.data,
-        accessToken: action.data.access_token
+        accessToken: action.data.access_token,
+        refreshToken: action.data.refresh_token,
+        expiresIn: action.data.expires_in,
+        expiresAt: date
       });
     case LOGOUT:
       return Object.assign({}, state, {
