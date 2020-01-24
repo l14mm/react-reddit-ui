@@ -7,7 +7,7 @@ const Redirect = (props: any) => {
   const { dispatch } = props;
   const { code, state } = queryString.parse(props.location.search);
 
-  fetch(`http://localhost:3001/?code=${code}`)
+  fetch(`${process.env.REACT_APP_API_URL}?code=${code}`)
     .then(resp => resp.json())
     .then(json => {
       dispatch(login(json));

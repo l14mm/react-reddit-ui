@@ -104,9 +104,9 @@ function authenticate(state: any = {}, action: Actions) {
       date.setUTCSeconds(date.getUTCSeconds() + action.data.expires_in);
       return Object.assign({}, state, {
         data: action.data,
-        accessToken: action.data.access_token,
-        refreshToken: action.data.refresh_token,
-        expiresIn: action.data.expires_in,
+        accessToken: action.data.access_token || state.accessToken,
+        refreshToken: action.data.refresh_token || state.refreshToken,
+        expiresIn: action.data.expires_in || state.expiresIn,
         expiresAt: date
       });
     case LOGOUT:
