@@ -12,7 +12,7 @@ import {
   SWITCH_THEME
 } from "./types";
 import { store } from "./App";
-import { Login } from "./Components/models/Login";
+import Login from "./Components/models/Login";
 
 export function selectSubreddit(subreddit: string) {
   return {
