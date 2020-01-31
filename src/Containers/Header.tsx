@@ -74,7 +74,7 @@ const Header = ({ username, dispatch, theme }: HeaderPropsWithDispatch) => {
   }
 
   function login() {
-    const clientId = "OrJeH0ot_Zfl6Q";
+    const clientId = process.env.REACT_APP_CLIENT_ID;
     const redirectUrl = `${window.location.origin}/redirect`;
     window.location.href = `https://www.reddit.com/api/v1/authorize?client_id=${clientId}&response_type=code&state=${window.location.pathname}&redirect_uri=${redirectUrl}&duration=permanent&scope=identity,account,edit,flair,history,read,save,vote`;
   }
@@ -97,11 +97,13 @@ const Header = ({ username, dispatch, theme }: HeaderPropsWithDispatch) => {
             React Reddit
           </Typography>
         </Link>
-        <Link to="/account" className={classes.link}>
-          My Account
-        </Link>
         {username ? (
-          `Hi, ${username}`
+          <>
+            <Link to="/account" className={classes.link}>
+              My Account
+            </Link>
+            <Typography variant="body2">Hi, {username}</Typography>
+          </>
         ) : (
             <Button
               href="#"

@@ -119,7 +119,6 @@ export const switchTheme = () => {
 
 export const refreshAccessToken = (refreshToken: string) => {
   return (dispatch: Dispatch<any>) => {
-    console.log('refreshing token')
     return fetch(`${process.env.REACT_APP_API_URL}/refresh?refresh_token=${refreshToken}`)
       .then(response => response.json())
       .then(json => {
