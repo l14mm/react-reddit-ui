@@ -1,17 +1,14 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import ArrowUpIcon from "@material-ui/icons/ArrowUpward";
-import ArrowDownIcon from "@material-ui/icons/ArrowDownward";
 import {
   Card,
   CardContent,
   Typography,
   CardMedia,
   Theme,
-  IconButton
+  makeStyles,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import clsx from "clsx";
+import { Votes } from "./Votes";
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -38,34 +35,8 @@ const useStyles = makeStyles((theme: Theme) => {
       backgroundColor: "gray",
       color: "white"
     },
-    votes: {
-      display: "flex",
-      flexDirection: "column",
-      margin: 5,
-      textAlign: "center",
-      justifyContent: "center",
-      minWidth: 60
-    },
     link: {
       textDecoration: "none"
-    },
-    voteArrow: {
-    },
-    upvoted: {
-      color: "red"
-    },
-    downvoted: {
-      color: "blue"
-    },
-    voteArrowUp: {
-      "&:hover": {
-        color: "red"
-      }
-    },
-    voteArrowDown: {
-      "&:hover": {
-        color: "blue"
-      }
     }
   };
 });
@@ -109,32 +80,11 @@ const Posts = (props: PostsProps) => {
       {props.posts.map((post, i) => (
         <Link to={post.permalink} className={classes.link} key={i}>
           <Card className={classes.post}>
-            <div className={classes.votes}>
-              <IconButton
-                className={clsx(classes.voteArrow, classes.voteArrowUp, {
-                  [classes.upvoted]: post.likes
-                })}
-                onClick={(e) => { e.preventDefault() }}
-                aria-label="upvote"
-              // style={{ color: post.likes ? "red" : post.likes === false ? "blue" : undefined }}
-              >
-                <ArrowUpIcon />
-              </IconButton>
-              <Typography>{post.ups}</Typography>
-              <IconButton
-                className={clsx(classes.voteArrow, classes.voteArrowDown, {
-                  [classes.downvoted]: post.likes === false
-                })}
-                onClick={(e) => { e.preventDefault() }}
-                aria-label="downvote"
-              >
-                <ArrowDownIcon />
-              </IconButton>
-            </div>
+            <Votes post={post} />
             {renderThumbnail(classes, post.thumbnail)}
             <div className={classes.details}>
               <CardContent className={classes.content}>
-                <Typography component="h5" variant="h5">
+                <Typography component="h6" variant="h6">
                   {post.title}
                 </Typography>
                 <Typography variant="subtitle1" color="textSecondary">
