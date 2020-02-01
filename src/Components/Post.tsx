@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import { Classes } from "@material-ui/styles/mergeClasses/mergeClasses";
 import Comment from "./Comment";
+import { Votes } from "./Votes";
 
 const styles = (theme: Theme) => {
   return {
@@ -42,14 +43,6 @@ const styles = (theme: Theme) => {
       padding: theme.spacing(0, 2),
       textDecoration: "none"
     },
-    votes: {
-      display: "flex",
-      flexDirection: "column" as "column",
-      margin: 5,
-      textAlign: "center" as "center",
-      justifyContent: "center",
-      minWidth: 60
-    },
     indent: {
       marginLeft: "20px"
     },
@@ -67,47 +60,43 @@ export interface PostProps {
 
 const Post = (props: PostProps) => {
   const { classes, items, comments } = props;
-  // items && console.log("items", items);
-  // comments && console.log("comments", comments);
 
   return !items || items.length === 0 ? (
     <CircularProgress className={classes.progress} />
   ) : (
-    <>
-      <Link className={classes.link} href={items.url} target="_blank">
-        <Card className={classes.post}>
-          <div className={classes.votes}>
-            <Typography>{items.ups}</Typography>
-          </div>
-          <CardMedia className={classes.thumbnail} image={items.thumbnail} />
-          <div className={classes.details}>
-            <CardContent className={classes.content}>
-              <Typography component="h5" variant="h5">
-                {items.title}
-              </Typography>
-              <Typography variant="subtitle1" color="textSecondary">
-                u/{items.author} - r/{items.subreddit}
-              </Typography>
-            </CardContent>
-          </div>
-        </Card>
-      </Link>
-      <List component="nav" className={classes.root}>
-        {comments.slice(0, 2).map((reply: any) => (
-          <Comment
-            classes={classes}
-            key={reply.id}
-            id={reply.id}
-            ups={reply.ups}
-            body={reply.body}
-            author={reply.author}
-            replies={reply.replies}
-            indent={0}
-          />
-        ))}
-      </List>
-    </>
-  );
+      <>
+        <Link className={classes.link} href={items.url} target="_blank">
+          <Card className={classes.post}>
+            <Votes post={items} />
+            <CardMedia className={classes.thumbnail} image={items.thumbnail} />
+            <div className={classes.details}>
+              <CardContent className={classes.content}>
+                <Typography component="h5" variant="h5">
+                  {items.title}
+                </Typography>
+                <Typography variant="subtitle1" color="textSecondary">
+                  u/{items.author} - r/{items.subreddit}
+                </Typography>
+              </CardContent>
+            </div>
+          </Card>
+        </Link>
+        <List component="nav" className={classes.root}>
+          {comments.slice(0, 2).map((reply: any) => (
+            <Comment
+              classes={classes}
+              key={reply.id}
+              id={reply.id}
+              ups={reply.ups}
+              body={reply.body}
+              author={reply.author}
+              replies={reply.replies}
+              indent={0}
+            />
+          ))}
+        </List>
+      </>
+    );
 };
 
 export interface AsyncAppState {

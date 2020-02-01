@@ -6,6 +6,7 @@ import {
   CardMedia,
   Theme,
   makeStyles,
+  List,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { Votes } from "./Votes";
@@ -26,14 +27,20 @@ const useStyles = makeStyles((theme: Theme) => {
       flexDirection: "column"
     },
     content: {
-      flex: "1 0 auto"
+      flex: "1 0 auto",
+      padding: "8px 12px 8px 12px",
+      "&:last-child": {
+        paddingBottom: 8
+      }
     },
     thumbnail: {
       width: 100,
       minWidth: 100,
       height: 100,
       backgroundColor: "gray",
-      color: "white"
+      color: "white",
+      margin: "auto 0 auto 0",
+      borderRadius: 4
     },
     link: {
       textDecoration: "none"
@@ -76,7 +83,7 @@ const renderThumbnail = (classes: any, thumbnail: string) => {
 const Posts = (props: PostsProps) => {
   const classes = useStyles();
   return (
-    <ul>
+    <List>
       {props.posts.map((post, i) => (
         <Link to={post.permalink} className={classes.link} key={i}>
           <Card className={classes.post}>
@@ -96,7 +103,7 @@ const Posts = (props: PostsProps) => {
         </Link>
       ))
       }
-    </ul >
+    </List>
   );
 };
 
