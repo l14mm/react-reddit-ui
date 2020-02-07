@@ -10,7 +10,7 @@ import {
   CircularProgress
 } from "@material-ui/core";
 import { Classes } from "@material-ui/styles/mergeClasses/mergeClasses";
-import Comment from "./Comment";
+import RecursiveComment from "./RecursiveComment";
 import { Votes } from "./Votes";
 
 const styles = (theme: Theme) => {
@@ -83,14 +83,10 @@ const Post = (props: PostProps) => {
         </Link>
         <List component="nav" className={classes.root}>
           {comments.slice(0, 2).map((reply: any) => (
-            <Comment
+            <RecursiveComment
               classes={classes}
               key={reply.id}
-              id={reply.id}
-              ups={reply.ups}
-              body={reply.body}
-              author={reply.author}
-              replies={reply.replies}
+              comment={reply}
               indent={0}
             />
           ))}

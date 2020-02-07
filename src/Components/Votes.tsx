@@ -3,7 +3,6 @@ import { makeStyles, IconButton, Typography } from "@material-ui/core";
 import ArrowUpIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownIcon from "@material-ui/icons/ArrowDownward";
 import clsx from "clsx";
-import { PostType } from "./Posts";
 
 const useStyles = makeStyles(() => {
     return {
@@ -37,7 +36,10 @@ const useStyles = makeStyles(() => {
 });
 
 interface VotesProps {
-    post: PostType;
+    post: {
+        likes: boolean;
+        ups: number;
+    }
 }
 
 export const Votes = ({ post }: VotesProps) => {
