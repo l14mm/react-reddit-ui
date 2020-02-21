@@ -77,6 +77,7 @@ const styles = (theme: Theme) => ({
     borderLeft: "0.1em solid white",
     height: "100%",
     position: "absolute" as "absolute"
+  },
   }
   content: {
     display: "flex",
