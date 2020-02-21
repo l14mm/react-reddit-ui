@@ -78,7 +78,6 @@ const styles = (theme: Theme) => ({
     height: "100%",
     position: "absolute" as "absolute"
   },
-  }
   content: {
     display: "flex",
     flexDirection: "row" as "row",
