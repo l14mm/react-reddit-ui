@@ -34,9 +34,6 @@ const styles = (theme: Theme) => ({
     display: "flex",
     flexDirection: "column" as "column"
   },
-  content: {
-    flex: "1 0 auto"
-  },
   thumbnail: {
     width: 100,
     minWidth: 100,
@@ -81,6 +78,12 @@ const styles = (theme: Theme) => ({
     height: "100%",
     position: "absolute" as "absolute"
   }
+  content: {
+    display: "flex",
+    flexDirection: "row" as "row",
+    width: "100%",
+    alignItems: "center"
+  }
 });
 
 export interface CommentProps {
@@ -114,12 +117,9 @@ const RecursiveComment = ({ classes, comment, indent }: CommentProps) => {
           }}
         />)}
         <div
+          className={classes.content}
           style={{
-            display: "flex",
-            flexDirection: "row",
             paddingLeft: `${40 * indent}px`,
-            width: "100%",
-            alignItems: "center"
           }}>
           <Votes post={{ ups, likes }} />
           <ListItemText
@@ -150,9 +150,9 @@ const RecursiveComment = ({ classes, comment, indent }: CommentProps) => {
         replies && replies.data.children && (
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             {replies.data.children
-              .slice(0, 1)
-              .map((reply: any) => reply.data)
-              .map((reply: any) => (
+              .slice(0, 10)
+              .map((child: { data: Comment }) => child.data)
+              .map((reply: Comment) => (
                 <RecursiveComment
                   classes={classes}
                   key={reply.id}

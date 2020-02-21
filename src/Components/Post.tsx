@@ -12,6 +12,7 @@ import {
 import { Classes } from "@material-ui/styles/mergeClasses/mergeClasses";
 import RecursiveComment from "./RecursiveComment";
 import { Votes } from "./Votes";
+import Comment from "./models/Comment";
 
 const styles = (theme: Theme) => {
   return {
@@ -55,7 +56,7 @@ const styles = (theme: Theme) => {
 export interface PostProps {
   classes: Classes;
   items: any;
-  comments: any;
+  comments: Comment[];
 }
 
 const Post = (props: PostProps) => {
@@ -82,7 +83,7 @@ const Post = (props: PostProps) => {
           </Card>
         </Link>
         <List component="nav" className={classes.root}>
-          {comments.slice(0, 2).map((reply: any) => (
+          {comments.slice(0, 10).map((reply: Comment) => (
             <RecursiveComment
               classes={classes}
               key={reply.id}
