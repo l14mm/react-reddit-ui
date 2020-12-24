@@ -22,6 +22,10 @@ function selectedSubreddit(state = "all", action: Actions) {
   }
 }
 
+export interface RootState {
+  postsBySubreddit: PostsBySubredditState
+}
+
 interface PostsState {
   isFetching: boolean;
   didInvalidate: boolean;
@@ -72,8 +76,10 @@ function posts(
   }
 }
 
+export type PostsBySubredditState = Record<string, PostsState>;
+
 function postsBySubreddit(
-  state: Record<string, PostsState> = {},
+  state: PostsBySubredditState = {},
   action: Actions
 ) {
   switch (action.type) {
@@ -97,18 +103,32 @@ function postsBySubreddit(
   }
 }
 
-function authenticate(state: any = {}, action: Actions) {
+type AuthenticateState = {
+  data: any;
+  accessToken: string;
+  refreshToken: string;
+  expiresIn: string;
+  expiresAt: Date | null;
+};
+
+function authenticate(state: AuthenticateState = {
+  data: null,
+  accessToken: '',
+  refreshToken: '',
+  expiresIn: '',
+  expiresAt: null,
+}, action: Actions) {
+  const date = new Date();
   switch (action.type) {
     case LOGIN:
-      const date = new Date();
       date.setUTCSeconds(date.getUTCSeconds() + action.data.expires_in);
-      return Object.assign({}, state, {
-        data: action.data,
+      return {
+        ...state, 
         accessToken: action.data.access_token || state.accessToken,
         refreshToken: action.data.refresh_token || state.refreshToken,
         expiresIn: action.data.expires_in || state.expiresIn,
-        expiresAt: date
-      });
+        expiresAt: date,
+      }
     case LOGOUT:
       return Object.assign({}, state, {
         data: null
@@ -118,11 +138,14 @@ function authenticate(state: any = {}, action: Actions) {
   }
 }
 
-function settings(state: any = { theme: "dark" }, action: Actions) {
+export type SettingsState = {
+  theme: "light" | "dark"
+}
+
+function settings(state: SettingsState = { theme: "dark" }, action: Actions) {
   switch (action.type) {
     case SWITCH_THEME:
       return Object.assign({}, state, {
-        data: action.data,
         theme: state.theme === "light" ? "dark" : "light"
       });
     default:

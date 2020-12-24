@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 //server.js
 const express = require("express");
 const favicon = require("express-favicon");

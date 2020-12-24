@@ -2,6 +2,7 @@ import React from "react";
 import { Theme, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { connect } from "react-redux";
+import { SettingsState } from "../reducers";
 
 interface MyAccountProps {
   username: string;
@@ -13,7 +14,7 @@ interface MyAccountProps {
 
 interface MyAccountState {
   authenticate: any;
-  settings: any;
+  settings: SettingsState;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({

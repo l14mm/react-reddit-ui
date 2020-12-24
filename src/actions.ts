@@ -9,10 +9,13 @@ import {
   RECEIVE_POST,
   LOGIN,
   LOGOUT,
-  SWITCH_THEME
+  SWITCH_THEME,
+  RequestPostAction,
+  ReceivePostAction
 } from "./types";
 import { store } from "./App";
 import Login from "./Components/models/Login";
+import { RootState } from "./reducers";
 
 export function selectSubreddit(subreddit: string) {
   return {
@@ -36,7 +39,7 @@ function requestPosts(subreddit: string, after?: string | null) {
   };
 }
 
-function requestPost(subreddit: string) {
+function requestPost(subreddit: string): RequestPostAction {
   return {
     type: REQUEST_POST,
     subreddit
@@ -65,7 +68,7 @@ function receivePosts(subreddit: string, json: PostsJson) {
   };
 }
 
-function receivePost(query: string, json: [PostsJson, PostsJson]) {
+function receivePost(query: string, json: [PostsJson, PostsJson]): ReceivePostAction {
   return {
     type: RECEIVE_POST,
     query,
@@ -76,7 +79,7 @@ function receivePost(query: string, json: [PostsJson, PostsJson]) {
 }
 
 export const fetchPost = (query: string) => {
-  return (dispatch: Dispatch<any>) => {
+  return (dispatch: Dispatch<RequestPostAction | ReceivePostAction>) => {
     dispatch(requestPost(query));
     return fetch(`https://www.reddit.com${query}.json`)
       .then(response => response.json())
@@ -84,8 +87,7 @@ export const fetchPost = (query: string) => {
   };
 };
 
-function shouldFetchPosts(state: any, subreddit: string) {
-  return true;
+function shouldFetchPosts(state: RootState, subreddit: string) {
   const posts = state.postsBySubreddit[subreddit];
   if (!posts) {
     return true;
