@@ -123,7 +123,8 @@ function authenticate(state: AuthenticateState = {
     case LOGIN:
       date.setUTCSeconds(date.getUTCSeconds() + action.data.expires_in);
       return {
-        ...state, 
+        ...state,
+        data: action.data,
         accessToken: action.data.access_token || state.accessToken,
         refreshToken: action.data.refresh_token || state.refreshToken,
         expiresIn: action.data.expires_in || state.expiresIn,

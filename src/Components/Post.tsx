@@ -47,8 +47,8 @@ const styles = (theme: Theme) => {
     indent: {
       marginLeft: "20px"
     },
-    progress: {
-      margin: theme.spacing(2)
+    root: {
+      marginTop: theme.spacing(2)
     }
   };
 };
@@ -63,7 +63,7 @@ const Post = (props: PostProps) => {
   const { classes, items, comments } = props;
 
   return !items || items.length === 0 ? (
-    <CircularProgress className={classes.progress} />
+    <CircularProgress className={classes.root} />
   ) : (
       <>
         <Link className={classes.link} href={items.url} target="_blank">
